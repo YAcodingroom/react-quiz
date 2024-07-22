@@ -12,6 +12,7 @@ import Footer from './Footer'
 import Timer from './Timer'
 
 const SECS_PER_QUESTION = 30
+const BASE_URL = '../questions.json'
 
 const initialState = {
 	questions: [],
@@ -80,13 +81,19 @@ export default function App() {
 	useEffect(function () {
 		async function fetchData() {
 			try {
-				const res = await fetch('http://localhost:8000/questions')
+				const res = await fetch(BASE_URL, {
+					headers: {
+						'Content-Type': 'application/json',
+						Accept: 'application/json',
+					},
+				})
 				if (!res.ok) throw new Error('Something went wrong')
 
 				const data = await res.json()
 				if (!data) throw new Error('Data not found')
 
-				dispatch({ type: 'dataReceived', payload: data })
+				const { questions } = data
+				dispatch({ type: 'dataReceived', payload: questions })
 			} catch (err) {
 				console.log(err.message)
 				dispatch({ type: 'dataFailed' })
