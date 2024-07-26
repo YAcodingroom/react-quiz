@@ -1,5 +1,12 @@
-function FinishedScreen({ points, maxPoints, highscore, dispatch }) {
+import { useQuizContext } from '../context/QuizContext'
+
+function FinishedScreen() {
+	const { questions, points, highscore, dispatch } = useQuizContext()
+
+	const maxPoints = questions.reduce((prev, cur) => prev + cur.points, 0)
+
 	const percentage = (points / maxPoints) * 100
+
 	return (
 		<>
 			<p className="result">
